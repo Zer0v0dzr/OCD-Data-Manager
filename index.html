@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        OCD Adolescent Data Manager
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     Login
+===================================================== -->
+
+<div
+    id="login-page"
+    class="page"
+>
+
+    <div class="login-card">
+
+        <h1>
+            OCD Adolescent
+        </h1>
+
+        <h2>
+            数据管理平台
+        </h2>
+
+
+        <div class="form-group">
+
+            <label for="email-input">
+                管理员邮箱
+            </label>
+
+            <input
+                id="email-input"
+                type="email"
+                autocomplete="username"
+                placeholder="请输入邮箱"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="password-input">
+                密码
+            </label>
+
+            <input
+                id="password-input"
+                type="password"
+                autocomplete="current-password"
+                placeholder="请输入密码"
+            >
+
+        </div>
+
+
+        <div
+            id="login-error"
+            class="error-message"
+        >
+        </div>
+
+
+        <button
+            id="login-button"
+            class="primary-button"
+        >
+            登录
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     Application
+===================================================== -->
+
+<div
+    id="app-page"
+    class="page hidden"
+>
+
+
+    <!-- Header -->
+
+    <header class="topbar">
+
+        <div>
+
+            <div class="app-title">
+                OCD Adolescent Data Manager
+            </div>
+
+            <div class="app-subtitle">
+                Stop-Signal Task & Beads Task
+            </div>
+
+        </div>
+
+
+        <div class="topbar-right">
+
+            <span
+                id="admin-email"
+                class="admin-email"
+            >
+            </span>
+
+            <button
+                id="logout-button"
+                class="secondary-button"
+            >
+                退出登录
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             Summary
+        ================================================== -->
+
+        <section class="summary-grid">
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Session 总数
+                </div>
+
+                <div
+                    id="summary-total"
+                    class="summary-value"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    SST
+                </div>
+
+                <div
+                    id="summary-sst"
+                    class="summary-value"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Beads
+                </div>
+
+                <div
+                    id="summary-beads"
+                    class="summary-value"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    未完成 Session
+                </div>
+
+                <div
+                    id="summary-incomplete"
+                    class="summary-value"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             Toolbar
+        ================================================== -->
+
+        <section class="toolbar">
+
+
+            <div class="toolbar-left">
+
+
+                <select
+                    id="view-mode"
+                    class="filter-select"
+                >
+
+                    <option value="session">
+                        Session 视图
+                    </option>
+
+                    <option value="subject">
+                        被试视图
+                    </option>
+
+                </select>
+
+
+                <input
+                    id="subject-search"
+                    class="search-input"
+                    type="text"
+                    placeholder="搜索被试编号..."
+                >
+
+
+                <select
+                    id="task-filter"
+                    class="filter-select"
+                >
+
+                    <option value="all">
+                        全部任务
+                    </option>
+
+                    <option value="SST">
+                        SST
+                    </option>
+
+                    <option value="Beads">
+                        Beads
+                    </option>
+
+                </select>
+
+
+                <select
+                    id="status-filter"
+                    class="filter-select"
+                >
+
+                    <option value="all">
+                        全部状态
+                    </option>
+
+                    <option value="completed">
+                        已完成
+                    </option>
+
+                    <option value="incomplete">
+                        未完成
+                    </option>
+
+                </select>
+
+
+            </div>
+
+
+            <div class="toolbar-right">
+
+
+                <button
+                    id="refresh-button"
+                    class="secondary-button"
+                >
+                    刷新
+                </button>
+
+
+                <button
+                    id="export-button"
+                    class="secondary-button"
+                >
+                    导出当前列表
+                </button>
+
+
+                <button
+                    id="export-sst-button"
+                    class="secondary-button"
+                >
+                    导出全部 SST
+                </button>
+
+
+                <button
+                    id="export-beads-button"
+                    class="secondary-button"
+                >
+                    导出全部 Beads
+                </button>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             Batch Download Bar
+        ================================================== -->
+
+        <section
+            id="batch-toolbar"
+            class="batch-toolbar hidden"
+        >
+
+            <div class="batch-left">
+
+                <button
+                    id="select-all-button"
+                    class="secondary-button"
+                >
+                    全选当前列表
+                </button>
+
+
+                <button
+                    id="clear-selection-button"
+                    class="secondary-button"
+                >
+                    取消选择
+                </button>
+
+
+                <div
+                    id="selection-count"
+                    class="selection-count"
+                >
+                    已选择 0 个被试
+                </div>
+
+            </div>
+
+
+            <div class="batch-right">
+
+                <div
+                    id="batch-download-hint"
+                    class="batch-download-hint"
+                >
+                    下载范围：全部任务
+                </div>
+
+
+                <button
+                    id="batch-download-button"
+                    class="primary-button"
+                    disabled
+                >
+                    批量下载所选数据
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             Status
+        ================================================== -->
+
+        <div
+            id="data-status"
+            class="data-status"
+        >
+            正在加载数据...
+        </div>
+
+
+
+        <!-- =================================================
+             Table
+        ================================================== -->
+
+        <section class="table-card">
+
+            <div class="table-wrapper">
+
+                <table id="session-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                被试编号
+                            </th>
+
+                            <th>
+                                任务
+                            </th>
+
+                            <th>
+                                版本
+                            </th>
+
+                            <th>
+                                开始时间
+                            </th>
+
+                            <th>
+                                完成时间
+                            </th>
+
+                            <th>
+                                状态
+                            </th>
+
+                            <th>
+                                数据完整度
+                            </th>
+
+                            <th>
+                                QC
+                            </th>
+
+                            <th>
+                                操作
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="session-table-body"
+                    >
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- =====================================================
+     Detail Modal
+===================================================== -->
+
+<div
+    id="detail-modal"
+    class="modal hidden"
+>
+
+    <div class="modal-card">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2
+                    id="detail-title"
+                    class="modal-title"
+                >
+                    Session Detail
+                </h2>
+
+                <div
+                    id="detail-subtitle"
+                    class="modal-subtitle"
+                >
+                </div>
+
+            </div>
+
+
+            <button
+                id="close-detail-button"
+                class="close-button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+
+        <div
+            id="detail-info"
+            class="detail-info"
+        >
+        </div>
+
+
+
+        <div class="modal-toolbar">
+
+            <button
+                id="download-session-button"
+                class="primary-button"
+            >
+                下载该 Session CSV
+            </button>
+
+        </div>
+
+
+
+        <div class="detail-table-wrapper">
+
+            <table
+                id="detail-table"
+                class="detail-table"
+            >
+
+                <thead
+                    id="detail-table-head"
+                >
+                </thead>
+
+                <tbody
+                    id="detail-table-body"
+                >
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     Loading
+===================================================== -->
+
+<div
+    id="loading-overlay"
+    class="loading-overlay hidden"
+>
+
+    <div class="loading-box">
+
+        <div class="spinner">
+        </div>
+
+        <div id="loading-text">
+            正在加载...
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     Script Loader
+===================================================== -->
+
+<script>
+
+
+function loadScript(
+    src
+){
+
+    return new Promise(
+        function(
+            resolve,
+            reject
+        ){
+
+            const script =
+                document.createElement(
+                    "script"
+                );
+
+            script.src =
+                src;
+
+            script.onload =
+                resolve;
+
+            script.onerror =
+                function(){
+
+                    reject(
+                        new Error(
+                            "Failed to load: " +
+                            src
+                        )
+                    );
+
+                };
+
+            document.body
+                .appendChild(
+                    script
+                );
+
+        }
+    );
+
+}
+
+
+
+async function loadSupabase(){
+
+    try{
+
+        await loadScript(
+            "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+        );
+
+        if(
+            window.supabase
+        ){
+
+            return true;
+
+        }
+
+    }
+    catch(error){
+
+        console.warn(
+            "Supabase jsDelivr failed",
+            error
+        );
+
+    }
+
+
+    try{
+
+        await loadScript(
+            "https://unpkg.com/@supabase/supabase-js@2"
+        );
+
+        if(
+            window.supabase
+        ){
+
+            return true;
+
+        }
+
+    }
+    catch(error){
+
+        console.warn(
+            "Supabase unpkg failed",
+            error
+        );
+
+    }
+
+
+    return false;
+
+}
+
+
+
+async function loadJSZip(){
+
+    try{
+
+        await loadScript(
+            "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"
+        );
+
+        if(
+            window.JSZip
+        ){
+
+            return true;
+
+        }
+
+    }
+    catch(error){
+
+        console.warn(
+            "JSZip jsDelivr failed",
+            error
+        );
+
+    }
+
+
+    try{
+
+        await loadScript(
+            "https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"
+        );
+
+        if(
+            window.JSZip
+        ){
+
+            return true;
+
+        }
+
+    }
+    catch(error){
+
+        console.warn(
+            "JSZip unpkg failed",
+            error
+        );
+
+    }
+
+
+    return false;
+
+}
+
+
+
+async function startAdminApp(){
+
+    const supabaseOK =
+        await loadSupabase();
+
+
+    if(
+        !supabaseOK
+    ){
+
+        document
+            .getElementById(
+                "login-error"
+            )
+            .textContent =
+                "Supabase SDK 加载失败，请检查网络。";
+
+        return;
+
+    }
+
+
+    const zipOK =
+        await loadJSZip();
+
+
+    if(
+        !zipOK
+    ){
+
+        console.warn(
+            "JSZip 未加载，批量打包功能将不可用。"
+        );
+
+    }
+
+
+    await loadScript(
+        "config.js"
+    );
+
+
+    await loadScript(
+        "admin.js"
+    );
+
+}
+
+
+startAdminApp()
+    .catch(
+        function(error){
+
+            console.error(
+                error
+            );
+
+            alert(
+                "管理平台加载失败，请刷新重试。"
+            );
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
