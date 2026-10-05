@@ -1229,15 +1229,11 @@ function buildSubjectOverview(){
 
 function updateSummary(){
 
-    const total =
-        allSessions.length;
-
-
     const subjects =
         new Set(
             allSessions
                 .map(
-                    row=>
+                    row =>
                         String(
                             row.subject || ""
                         )
@@ -1245,19 +1241,21 @@ function updateSummary(){
                         .toLowerCase()
                 )
                 .filter(
-                    subject=>
+                    subject =>
                         subject !== ""
                 )
-        )
-        .size;
+        ).size;
+
+
+    const total =
+        allSessions.length;
 
 
     const sst =
         allSessions
             .filter(
-                row=>
-                    row.task ===
-                    "SST"
+                row =>
+                    row.task === "SST"
             )
             .length;
 
@@ -1265,46 +1263,54 @@ function updateSummary(){
     const beads =
         allSessions
             .filter(
-                row=>
-                    row.task ===
-                    "Beads"
+                row =>
+                    row.task === "Beads"
             )
             .length;
 
 
-    document
-        .getElementById(
+    const subjectsEl =
+        document.getElementById(
             "summary-subjects"
-        )
-        .textContent =
-            subjects;
+        );
 
-
-    document
-        .getElementById(
+    const totalEl =
+        document.getElementById(
             "summary-total"
-        )
-        .textContent =
-            total;
+        );
 
-
-    document
-        .getElementById(
+    const sstEl =
+        document.getElementById(
             "summary-sst"
-        )
-        .textContent =
-            sst;
+        );
 
-
-    document
-        .getElementById(
+    const beadsEl =
+        document.getElementById(
             "summary-beads"
-        )
-        .textContent =
+        );
+
+
+    if(subjectsEl){
+        subjectsEl.textContent =
+            subjects;
+    }
+
+    if(totalEl){
+        totalEl.textContent =
+            total;
+    }
+
+    if(sstEl){
+        sstEl.textContent =
+            sst;
+    }
+
+    if(beadsEl){
+        beadsEl.textContent =
             beads;
+    }
 
 }
-
 
 // ============================================================
 // Filters
