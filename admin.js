@@ -1229,51 +1229,79 @@ function buildSubjectOverview(){
 
 function updateSummary(){
 
+    const total =
+        allSessions.length;
+
+
+    const subjects =
+        new Set(
+            allSessions
+                .map(
+                    row=>
+                        String(
+                            row.subject || ""
+                        )
+                        .trim()
+                        .toLowerCase()
+                )
+                .filter(
+                    subject=>
+                        subject !== ""
+                )
+        )
+        .size;
+
+
+    const sst =
+        allSessions
+            .filter(
+                row=>
+                    row.task ===
+                    "SST"
+            )
+            .length;
+
+
+    const beads =
+        allSessions
+            .filter(
+                row=>
+                    row.task ===
+                    "Beads"
+            )
+            .length;
+
+
+    document
+        .getElementById(
+            "summary-subjects"
+        )
+        .textContent =
+            subjects;
+
+
     document
         .getElementById(
             "summary-total"
         )
         .textContent =
-            allSessions.length;
+            total;
+
 
     document
         .getElementById(
             "summary-sst"
         )
         .textContent =
-            allSessions
-                .filter(
-                    s=>
-                        s.task ===
-                        "SST"
-                )
-                .length;
+            sst;
+
 
     document
         .getElementById(
             "summary-beads"
         )
         .textContent =
-            allSessions
-                .filter(
-                    s=>
-                        s.task ===
-                        "Beads"
-                )
-                .length;
-
-    document
-        .getElementById(
-            "summary-incomplete"
-        )
-        .textContent =
-            allSessions
-                .filter(
-                    s=>
-                        s.completed !==
-                        true
-                )
-                .length;
+            beads;
 
 }
 
